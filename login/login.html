@@ -33,15 +33,19 @@
                     </div>
                     <form method="POST" action="login.php">
                         <div class="custom-select">
-                            <select>
+                            <select name="user_type">
                                       <option value="0">Client</option>
+									  <option value="1">Requirement and Design team</option>
+									  <option value="2">Development team</option>
+									  <option value="3">Testing team</option>
+									  <option value="4">Delivery and maintainance team</option>
                             </select>
                         </div>
                         <div class="inputfield">
-                            <input type="text" name="uname" placeholder="Username">
+                            <input type="text" name="u_name" placeholder="Username">
                         </div>
                         <div class="inputfield">
-                            <input type="text" name="pwd" placeholder="Password">
+                            <input type="text" name="p_wd" placeholder="Password">
                         </div>
                         <div class="inputfield">
                             <input type="submit" name="login" value="LOGIN">
