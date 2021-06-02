@@ -1,9 +1,9 @@
 <?php
+	include('../assests/dbconnect.php');
 	if(isset($_POST["login"]))
 	{
-		//echo $_POST["u_name"] . " " . $_POST["p_wd"] . " " . $_POST["user_type"];
 		$uname = $_POST["u_name"];
-		$link = mysqli_connect("localhost", "root", "", "pms");
+		// $link = mysqli_connect("localhost", "root", "", "pms");
 		
  
 // Check connection
@@ -31,19 +31,71 @@ if(($_POST["user_type"] == 0))
 	}
 	else if(($_POST["user_type"] == 1))
 	{
-		header('Location: ../req_and_des/dashboard.html');
+		$sql = "SELECT * FROM requirementanalysis_design_team where rd_user_name = '$uname'";
+		if($result = mysqli_query($link, $sql)){
+			if(mysqli_num_rows($result) >0){
+				$row = mysqli_fetch_row($result);
+				if($row[1] == $uname)
+					if($row[2]==$_POST["p_wd"])
+					header('Location: ../req_and_des/dashboard.html');
+					else
+						echo "incorrect password";
+			}	
+			else
+				echo "user not found";
+				
+		}
 	}
 	else if(($_POST["user_type"] == 2))
 	{
-		header('Location: ../development/dashboard.html');
+		$sql = "SELECT * FROM development_team where d_user_name = '$uname'";
+		if($result = mysqli_query($link, $sql)){
+			if(mysqli_num_rows($result) >0){
+				$row = mysqli_fetch_row($result);
+				if($row[1] == $uname)
+					if($row[2]==$_POST["p_wd"])
+					header('Location: ../development/dashboard.html');
+					else
+						echo "incorrect password";
+			}	
+			else
+				echo "user not found";
+				
+		}
 	}
 	else if(($_POST["user_type"] == 3))
 	{
-		header('Location: ../testing/dashboard.html');
+		$sql = "SELECT * FROM testing_team where t_user_name = '$uname'";
+		if($result = mysqli_query($link, $sql)){
+			if(mysqli_num_rows($result) >0){
+				$row = mysqli_fetch_row($result);
+				if($row[1] == $uname)
+					if($row[2]==$_POST["p_wd"])
+					header('Location: ../testing/dashboard.html');
+					else
+						echo "incorrect password";
+			}	
+			else
+				echo "user not found";
+				
+		}
 	}	
 	else if(($_POST["user_type"] == 4))
 	{
-		header('Location: ../delivery/dashboard.html');
+		$sql = "SELECT * FROM delivery_maintenance_team where dm_user_name = '$uname'";
+		if($result = mysqli_query($link, $sql)){
+			if(mysqli_num_rows($result) >0){
+				$row = mysqli_fetch_row($result);
+				if($row[1] == $uname)
+					if($row[2]==$_POST["p_wd"])
+					header('Location: ../delivery/dashboard.html');
+					else
+						echo "incorrect password";
+			}	
+			else
+				echo "user not found";
+				
+		}
 	}	
 }	
 ?>
