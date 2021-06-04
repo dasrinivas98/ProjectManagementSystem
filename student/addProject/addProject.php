@@ -93,7 +93,7 @@
                 <div class="card-body">
                   <h4 class="card-title">Add Project</h4>
                   <p class="card-description">
-                    Basic project info
+                    Synopsis
                   </p>
                   <form class="forms-sample" action="addProject.php" method="POST" enctype="multipart/form-data">
                     <div class="form-group">

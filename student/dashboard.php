@@ -257,95 +257,107 @@
             </div>
            </div>
            <div class="row">
-            <div class="col-md-12 stretch-card">
+            <div class="col-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <p class="card-title">Recent Purchases</p>
-                  <div class="table-responsive">
-                    <table id="recent-purchases-listing" class="table">
-                      <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Status report</th>
-                            <th>Office</th>
-                            <th>Price</th>
-                            <th>Date</th>
-                            <th>Gross amount</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                            <td>Jeremy Ortega</td>
-                            <td>Levelled up</td>
-                            <td>Catalinaborough</td>
-                            <td>$790</td>
-                            <td>06 Jan 2018</td>
-                            <td>$2274253</td>
-                        </tr>
-                        <tr>
-                            <td>Alvin Fisher</td>
-                            <td>Ui design completed</td>
-                            <td>East Mayra</td>
-                            <td>$23230</td>
-                            <td>18 Jul 2018</td>
-                            <td>$83127</td>
-                        </tr>
-                        <tr>
-                            <td>Emily Cunningham</td>
-                            <td>support</td>
-                            <td>Makennaton</td>
-                            <td>$939</td>
-                            <td>16 Jul 2018</td>
-                            <td>$29177</td>
-                        </tr>
-                        <tr>
-                            <td>Minnie Farmer</td>
-                            <td>support</td>
-                            <td>Agustinaborough</td>
-                            <td>$30</td>
-                            <td>30 Apr 2018</td>
-                            <td>$44617</td>
-                        </tr>
-                        <tr>
-                            <td>Betty Hunt</td>
-                            <td>Ui design not completed</td>
-                            <td>Lake Sandrafort</td>
-                            <td>$571</td>
-                            <td>25 Jun 2018</td>
-                            <td>$78952</td>
-                        </tr>
-                        <tr>
-                            <td>Myrtie Lambert</td>
-                            <td>Ui design completed</td>
-                            <td>Cassinbury</td>
-                            <td>$36</td>
-                            <td>05 Nov 2018</td>
-                            <td>$36422</td>
-                        </tr>
-                        <tr>
-                            <td>Jacob Kennedy</td>
-                            <td>New project</td>
-                            <td>Cletaborough</td>
-                            <td>$314</td>
-                            <td>12 Jul 2018</td>
-                            <td>$34167</td>
-                        </tr>
-                        <tr>
-                            <td>Ernest Wade</td>
-                            <td>Levelled up</td>
-                            <td>West Fidelmouth</td>
-                            <td>$484</td>
-                            <td>08 Sep 2018</td>
-                            <td>$50862</td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    <h4 class="card-title">My projects</h4>
+                    <p class="card-description">Status as on : <code id="date"></code></p>
+                      <script>
+                      function getday(){
+                          let today = new Date().toISOString().slice(0, 10);
+                          document.getElementById('date').textContent = today;
+                          document.getElementById('date1').textContent = today;
+                      }
+                          window.onload = getday;
+                      </script>
+                    <div class="col-lg-12 grid-margin stretch-card">
+                      <div class="card">
+                        <div class="card-body">
+                          <div class="table-responsive">
+                            <table class="table" style="text-align: center;">
+                              <thead>
+                                <tr>
+                                  <th>#</th>
+                                  <th>Project Title</th>
+                                  <th>Status</th>
+                                  <th>Action</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <?php 
+                                  $sid = $_SESSION["s_id"];
+                                  $sql = "select * from projects where s_id = $sid";
+                                  if (!($result = mysqli_query($link, $sql))) { 
+                                    printf("Errormessage: %s\n", mysqli_error($link));
+                                }
+                                else {     
+                                    if(mysqli_num_rows($result) >0){
+                                      $i = 1;
+                                      while($row = mysqli_fetch_array($result)) {
+                                ?>
+                                <tr>
+                                  <td><?php echo $i?></td>
+                                  <td><?php echo $row['p_title'];?></td>
+                                  <?php 
+                                      if($row['status'] == 0){
+                                        echo "<td><label class='text-danger'>In progress</label></td>";
+                                      }
+                                      else{
+                                        echo "<td><label class='text-success'>Completed</label></td>";
+                                      }
+                                  ?>
+                                  <td><button type="button" class="btn btn-inverse-primary btn-fw"  data-toggle="modal" 
+                                    data-target="#exampleModal<?php echo $row['p_id'];?>">Add Project Report</button></td>
+                                </tr>
+                                <!-- Modal -->
+                                <div class="modal fade" id="exampleModal<?php echo $row['p_id'];?>">
+                                  <div class="modal-dialog">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title">Add Project Report</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                      </div>
+                                    <div class="modal-body">
+                                      <form class="forms-sample">
+                                        <div class="form-group">
+                                          <label>File upload</label>
+                                            <div class="form-group">
+                                              <input type="file" name="img[]" class="file-upload-default" multiple>
+                                              <div class="input-group col-xs-12">
+                                                <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Project Report">
+                                                <span class="input-group-append">
+                                                  <button class="file-upload-browse btn btn-primary" type="button"><i class="mdi mdi-upload"></i> Upload</button>
+                                                </span>
+                                              </div>
+                                            </div>
+                                        </div>
+                                    <div class="form-group" id="txtEditor">
+                                      <label for="exampleTextarea1">Additional remarks</label>
+                                      <textarea id="editor" class="form-control" placeholder="Additional remarks"></textarea>
+                                    </div>
+                                  </form>
+                                </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"> Close</button>
+                                <button type="button" class="btn btn-primary">Save</button>
+                              </div>                   
+                            </div>
+                          </div>
+                          <?php $i++;}}}?>
+                              </tbody>
+                            </table>
+                           
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
               </div>
             </div>
-          </div>
-          <div class="row">
+            
+            
+              
+          <!-- <div class="row">
             <div class="col-lg-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
@@ -354,7 +366,7 @@
               </div>
             </div>
            </div>
-          </div> 
+          </div>  -->
           <!-- <div class="row">
             <div class="col-md-12 grid-margin">
               <div class="d-flex justify-content-between flex-wrap">
