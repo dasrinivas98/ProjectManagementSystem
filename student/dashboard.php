@@ -1,5 +1,6 @@
 <?php
   include('../assests/dbconnect.php');
+  include('../assests/fileslogic.php');
   include('../signin/login/login.php');
 ?>
 <!DOCTYPE html>
@@ -306,11 +307,68 @@
                                         echo "<td><label class='text-success'>Completed</label></td>";
                                       }
                                   ?>
-                                  <td><button type="button" class="btn btn-inverse-primary btn-fw"  data-toggle="modal" 
-                                    data-target="#exampleModal<?php echo $row['p_id'];?>">Add Project Report</button></td>
+                                    <td><button type="button" class="btn btn-inverse-warning btn-fw"
+                                      data-toggle="collapse" data-target="#demo<?php echo $row['p_id'];?>">Add Project Report</button></td>
                                 </tr>
-                                <!-- Modal -->
+                                <div id="demo<?php echo $row['p_id'];?>" class="card col-lg-12 grid-margin stretch-card collapse shadow p-3 mb-5 bg-white rounded">
+                                  <div class="card-body">
+                                    <h4 class="card-title">Add Project Report</h4>
+                                    <div class="card shadow p-3 mb-5 bg-white rounded">
+                                     <div class="card-body">
+                                      <form class="forms-sample" action="dashboard.php" method="POST" enctype="multipart/form-data">
+                                        <div class="form-group">
+                                          <label>Status</label>
+                                          <div class="form-check">
+                                            <label class="form-check-label">
+                                              <input type="radio" class="form-check-input" name="status" id="optionsRadios1" value="0" checked>
+                                              In progress
+                                            </label>
+                                        </div>
+                                       <div class="form-check">
+                                        <label class="form-check-label">
+                                          <input type="radio" class="form-check-input" name="status" id="optionsRadios2" value="1">
+                                          Completed
+                                        </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" id="txtEditor">
+                                      <label for="exampleTextarea1">Additional remarks</label>
+                                      <textarea id="editor" name="addinfo" class="form-control" placeholder="Additional remarks"></textarea>
+                                      <input type='hidden' name='p_id' value="<?php echo $row['p_id']?>"/>
+                                    </div>
+                                    <?php
+                                        if($row['report']== 'NULL' || $row['report']== ''){
+                                          echo "<label>Add Project report</label>
+                                          <div class='form-group' id='txtEditor'>
+                                          <input type='file' name = 'pFiles'></div>";
+                                        }
+                                        else{
+                                          $pid = $row["p_id"];
+                                          $report = $row['report'];
+                                          // echo '<from action="../assests/fileslogic.php" method="POST">
+                                          //   <input type="hidden" value="'.$pid.'" name="pid">
+                                          //   <input  type="submit" name="download" value="Download Report" class="btn btn-primary">
+
+                                          //   </form>';
+                                          echo '<div class="form-group"><a href="../assests/fileslogic.php?pid='.$pid.'">Download Report</a></div>';
+                                            // <a href="dashboard.php?file_id='.$pid.'">Download</a>';
+
+                                        }
+                                    ?>
+                                    
+                                    
+                                    <div>
+                                        <input  type="submit" name="save" value="save" class="btn btn-primary">
+                                    </div>
+                                </div>           
+                                </form>
+                                      </div>
+                                    </div>  
+                                  </div>
+                                </div>
+                                <!-- Modal
                                 <div class="modal fade" id="exampleModal<?php echo $row['p_id'];?>">
+                                <?php $_SESSION['p_id'] = $row['p_id'];?>
                                   <div class="modal-dialog">
                                     <div class="modal-content">
                                       <div class="modal-header">
@@ -318,31 +376,34 @@
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                       </div>
                                     <div class="modal-body">
-                                      <form class="forms-sample">
+                                      <form class="forms-sample" action="dashboard.php" method="POST">
                                         <div class="form-group">
-                                          <label>File upload</label>
-                                            <div class="form-group">
-                                              <input type="file" name="img[]" class="file-upload-default" multiple>
-                                              <div class="input-group col-xs-12">
-                                                <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Project Report">
-                                                <span class="input-group-append">
-                                                  <button class="file-upload-browse btn btn-primary" type="button"><i class="mdi mdi-upload"></i> Upload</button>
-                                                </span>
-                                              </div>
-                                            </div>
+                                          <div class="form-check">
+                                            <label class="form-check-label">
+                                              <input type="radio" class="form-check-input" name="status" id="optionsRadios1" value="0" checked>
+                                              In progress
+                                            </label>
                                         </div>
+                                       <div class="form-check">
+                                        <label class="form-check-label">
+                                          <input type="radio" class="form-check-input" name="status" id="optionsRadios2" value="1">
+                                          Completed
+                                        </label>
+                                        </div>
+                                    </div>
                                     <div class="form-group" id="txtEditor">
                                       <label for="exampleTextarea1">Additional remarks</label>
-                                      <textarea id="editor" class="form-control" placeholder="Additional remarks"></textarea>
+                                      <textarea id="editor" name="addinfo" class="form-control" placeholder="Additional remarks"></textarea>
+                                      <input type='hidden' name='p_id' value="<?php echo $row['p_id']?>"/>
                                     </div>
-                                  </form>
                                 </div>
                               <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal"> Close</button>
-                                <button type="button" class="btn btn-primary">Save</button>
+                                <input  type="submit" name="save" value="save" class="btn btn-primary">
+                                </form>
                               </div>                   
                             </div>
-                          </div>
+                          </div> -->
                           <?php $i++;}}}?>
                               </tbody>
                             </table>
@@ -351,345 +412,74 @@
                         </div>
                       </div>
                     </div>
+                    
                   </div>
               </div>
             </div>
-            
-            
+            <?php
+                // if (isset($_POST['download'])) {
+                //   $id = $_POST['pid'];
+                //   echo $id;
+                  // $sql = "SELECT * FROM projects WHERE id=$id";
+                  // $result = mysqli_query($link, $sql);
+                  // echo "<script>window.alert('".$id."')</script>";
+                  // $file = mysqli_fetch_assoc($result);
+                  
+                  // $filepath = 'uploads/' . $file['report'];
+                  // echo "<script>consle.log('".$filepath."')</script>";
+                  // if (file_exists($filepath)) {
+                  //     header('Content-Description: File Transfer');
+                  //     header('Content-Type: application/octet-stream');
+                  //     header('Content-Disposition: attachment; filename=' . basename($filepath));
+                  //     header('Expires: 0');
+                  //     header('Cache-Control: must-revalidate');
+                  //     header('Pragma: public');
+                  //     header('Content-Length: ' . filesize('uploads/' . $file['name']));
+                  //     readfile('uploads/' . $file['name']);
+                  //     exit;
+                  // }
               
-          <!-- <div class="row">
-            <div class="col-lg-12 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <canvas id="doughnutChart"></canvas>
-                </div>
-              </div>
-            </div>
-           </div>
-          </div>  -->
-          <!-- <div class="row">
-            <div class="col-md-12 grid-margin">
-              <div class="d-flex justify-content-between flex-wrap">
-                <div class="d-flex align-items-end flex-wrap">
-                  <div class="mr-md-3 mr-xl-5">
-                    <h2>Welcome back,</h2>
-                    <p class="mb-md-0">Your analytics dashboard template.</p>
-                  </div>
-                  <div class="d-flex">
-                    <i class="mdi mdi-home text-muted hover-cursor"></i>
-                    <p class="text-muted mb-0 hover-cursor">&nbsp;/&nbsp;Dashboard&nbsp;/&nbsp;</p>
-                    <p class="text-primary mb-0 hover-cursor">Analytics</p>
-                  </div>
-                </div>
-                <div class="d-flex justify-content-between align-items-end flex-wrap">
-                  <button type="button" class="btn btn-light bg-white btn-icon mr-3 d-none d-md-block ">
-                    <i class="mdi mdi-download text-muted"></i>
-                  </button>
-                  <button type="button" class="btn btn-light bg-white btn-icon mr-3 mt-2 mt-xl-0">
-                    <i class="mdi mdi-clock-outline text-muted"></i>
-                  </button>
-                  <button type="button" class="btn btn-light bg-white btn-icon mr-3 mt-2 mt-xl-0">
-                    <i class="mdi mdi-plus text-muted"></i>
-                  </button>
-                  <button class="btn btn-primary mt-2 mt-xl-0">Generate report</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row" id="proBanner">
-            <div class="col-md-12 grid-margin">
-              <div class="card bg-gradient-primary border-0">
-                <div class="card-body py-3 px-4 d-flex align-items-center justify-content-between flex-wrap">
-                  <p class="mb-0 text-white font-weight-medium">Get tons of UI components, Plugins, multiple layouts, 20+ sample pages, and more!                  </p>
-                  <div class="d-flex">
-                    <a href="https://www.bootstrapdash.com/product/majestic-admin-pro?utm_source=organic&utm_medium=banner&utm_campaign=free-preview" target="_blank" class="btn btn-outline-light mr-2 bg-gradient-danger border-0">Check Pro Version</a>
-                    <button id="bannerClose" class="btn border-0 p-0 ml-auto">
-                      <i class="mdi mdi-close text-white"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body dashboard-tabs p-0">
-                  <ul class="nav nav-tabs px-4" role="tablist">
-                    <li class="nav-item">
-                      <a class="nav-link active" id="overview-tab" data-toggle="tab" href="#overview" role="tab" aria-controls="overview" aria-selected="true">Overview</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" id="sales-tab" data-toggle="tab" href="#sales" role="tab" aria-controls="sales" aria-selected="false">Sales</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" id="purchases-tab" data-toggle="tab" href="#purchases" role="tab" aria-controls="purchases" aria-selected="false">Purchases</a>
-                    </li>
-                  </ul>
-                  <div class="tab-content py-0 px-0">
-                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
-                      <div class="d-flex flex-wrap justify-content-xl-between">
-                        <div class="d-none d-xl-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-calendar-heart icon-lg mr-3 text-primary"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">Start date</small>
-                            <div class="dropdown">
-                              <a class="btn btn-secondary dropdown-toggle p-0 bg-transparent border-0 text-dark shadow-none font-weight-medium" href="#" role="button" id="dropdownMenuLinkA" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <h5 class="mb-0 d-inline-block">26 Jul 2018</h5>
-                              </a>
-                              <div class="dropdown-menu" aria-labelledby="dropdownMenuLinkA">
-                                <a class="dropdown-item" href="#">12 Aug 2018</a>
-                                <a class="dropdown-item" href="#">22 Sep 2018</a>
-                                <a class="dropdown-item" href="#">21 Oct 2018</a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-currency-usd mr-3 icon-lg text-danger"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">Revenue</small>
-                            <h5 class="mr-2 mb-0">$577545</h5>
-                          </div>
-                        </div>
-                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-eye mr-3 icon-lg text-success"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">Total views</small>
-                            <h5 class="mr-2 mb-0">9833550</h5>
-                          </div>
-                        </div>
-                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-download mr-3 icon-lg text-warning"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">Downloads</small>
-                            <h5 class="mr-2 mb-0">2233783</h5>
-                          </div>
-                        </div>
-                        <div class="d-flex py-3 border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-flag mr-3 icon-lg text-danger"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">Flagged</small>
-                            <h5 class="mr-2 mb-0">3497843</h5>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="tab-pane fade" id="sales" role="tabpanel" aria-labelledby="sales-tab">
-                      <div class="d-flex flex-wrap justify-content-xl-between">
-                        <div class="d-none d-xl-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-calendar-heart icon-lg mr-3 text-primary"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">Start date</small>
-                            <div class="dropdown">
-                              <a class="btn btn-secondary dropdown-toggle p-0 bg-transparent border-0 text-dark shadow-none font-weight-medium" href="#" role="button" id="dropdownMenuLinkA" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <h5 class="mb-0 d-inline-block">26 Jul 2018</h5>
-                              </a>
-                              <div class="dropdown-menu" aria-labelledby="dropdownMenuLinkA">
-                                <a class="dropdown-item" href="#">12 Aug 2018</a>
-                                <a class="dropdown-item" href="#">22 Sep 2018</a>
-                                <a class="dropdown-item" href="#">21 Oct 2018</a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-download mr-3 icon-lg text-warning"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">Downloads</small>
-                            <h5 class="mr-2 mb-0">2233783</h5>
-                          </div>
-                        </div>
-                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-eye mr-3 icon-lg text-success"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">Total views</small>
-                            <h5 class="mr-2 mb-0">9833550</h5>
-                          </div>
-                        </div>
-                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-currency-usd mr-3 icon-lg text-danger"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">Revenue</small>
-                            <h5 class="mr-2 mb-0">$577545</h5>
-                          </div>
-                        </div>
-                        <div class="d-flex py-3 border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-flag mr-3 icon-lg text-danger"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">Flagged</small>
-                            <h5 class="mr-2 mb-0">3497843</h5>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="tab-pane fade" id="purchases" role="tabpanel" aria-labelledby="purchases-tab">
-                      <div class="d-flex flex-wrap justify-content-xl-between">
-                        <div class="d-none d-xl-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-calendar-heart icon-lg mr-3 text-primary"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">Start date</small>
-                            <div class="dropdown">
-                              <a class="btn btn-secondary dropdown-toggle p-0 bg-transparent border-0 text-dark shadow-none font-weight-medium" href="#" role="button" id="dropdownMenuLinkA" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <h5 class="mb-0 d-inline-block">26 Jul 2018</h5>
-                              </a>
-                              <div class="dropdown-menu" aria-labelledby="dropdownMenuLinkA">
-                                <a class="dropdown-item" href="#">12 Aug 2018</a>
-                                <a class="dropdown-item" href="#">22 Sep 2018</a>
-                                <a class="dropdown-item" href="#">21 Oct 2018</a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-currency-usd mr-3 icon-lg text-danger"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">Revenue</small>
-                            <h5 class="mr-2 mb-0">$577545</h5>
-                          </div>
-                        </div>
-                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-eye mr-3 icon-lg text-success"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">Total views</small>
-                            <h5 class="mr-2 mb-0">9833550</h5>
-                          </div>
-                        </div>
-                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-download mr-3 icon-lg text-warning"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">Downloads</small>
-                            <h5 class="mr-2 mb-0">2233783</h5>
-                          </div>
-                        </div>
-                        <div class="d-flex py-3 border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-flag mr-3 icon-lg text-danger"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">Flagged</small>
-                            <h5 class="mr-2 mb-0">3497843</h5>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-7 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <p class="card-title">Cash deposits</p>
-                  <p class="mb-4">To start a blog, think of a topic about and first brainstorm party is ways to write details</p>
-                  <div id="cash-deposits-chart-legend" class="d-flex justify-content-center pt-3"></div>
-                  <canvas id="cash-deposits-chart"></canvas>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-5 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <p class="card-title">Total sales</p>
-                  <h1>$ 28835</h1>
-                  <h4>Gross sales over the years</h4>
-                  <p class="text-muted">Today, many people rely on computers to do homework, work, and create or store useful information. Therefore, it is important </p>
-                  <div id="total-sales-chart-legend"></div>                  
-                </div>
-                <canvas id="total-sales-chart"></canvas>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12 stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <p class="card-title">Recent Purchases</p>
-                  <div class="table-responsive">
-                    <table id="recent-purchases-listing" class="table">
-                      <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Status report</th>
-                            <th>Office</th>
-                            <th>Price</th>
-                            <th>Date</th>
-                            <th>Gross amount</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                            <td>Jeremy Ortega</td>
-                            <td>Levelled up</td>
-                            <td>Catalinaborough</td>
-                            <td>$790</td>
-                            <td>06 Jan 2018</td>
-                            <td>$2274253</td>
-                        </tr>
-                        <tr>
-                            <td>Alvin Fisher</td>
-                            <td>Ui design completed</td>
-                            <td>East Mayra</td>
-                            <td>$23230</td>
-                            <td>18 Jul 2018</td>
-                            <td>$83127</td>
-                        </tr>
-                        <tr>
-                            <td>Emily Cunningham</td>
-                            <td>support</td>
-                            <td>Makennaton</td>
-                            <td>$939</td>
-                            <td>16 Jul 2018</td>
-                            <td>$29177</td>
-                        </tr>
-                        <tr>
-                            <td>Minnie Farmer</td>
-                            <td>support</td>
-                            <td>Agustinaborough</td>
-                            <td>$30</td>
-                            <td>30 Apr 2018</td>
-                            <td>$44617</td>
-                        </tr>
-                        <tr>
-                            <td>Betty Hunt</td>
-                            <td>Ui design not completed</td>
-                            <td>Lake Sandrafort</td>
-                            <td>$571</td>
-                            <td>25 Jun 2018</td>
-                            <td>$78952</td>
-                        </tr>
-                        <tr>
-                            <td>Myrtie Lambert</td>
-                            <td>Ui design completed</td>
-                            <td>Cassinbury</td>
-                            <td>$36</td>
-                            <td>05 Nov 2018</td>
-                            <td>$36422</td>
-                        </tr>
-                        <tr>
-                            <td>Jacob Kennedy</td>
-                            <td>New project</td>
-                            <td>Cletaborough</td>
-                            <td>$314</td>
-                            <td>12 Jul 2018</td>
-                            <td>$34167</td>
-                        </tr>
-                        <tr>
-                            <td>Ernest Wade</td>
-                            <td>Levelled up</td>
-                            <td>West Fidelmouth</td>
-                            <td>$484</td>
-                            <td>08 Sep 2018</td>
-                            <td>$50862</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
+              // }
+            ?>
+            <?php
+              if(isset($_POST['save']))
+              {
+                $p_id =  $_POST['p_id'];
+                $status =  $_POST['status'];
+                $addinfo = $_POST['addinfo'];
+
+                $filename = $_FILES['pFiles']['name'];
+                $sql1 = "UPDATE projects SET status = '$status', report = '$filename' WHERE p_id = '$p_id' ";
+                if (!mysqli_query($link, $sql1)) {
+                  // echo "File uploaded successfully";
+                  printf("Errormessage: %s\n", mysqli_error($link));
+                  }
+                // else {
+                //        echo "updated status";
+                //     }
+                // $filename = $_POST['pFiles'];
+                $destination = '../assests/uploads/' . $filename;
+                // echo($destination);
+                $extension = pathinfo($filename, PATHINFO_EXTENSION);
+                $file = $_FILES['pFiles']['tmp_name'];
+                $size = $_FILES['pFiles']['size'];
+                if (move_uploaded_file($file, $destination)) {
+                $sql = "INSERT INTO reports(r_id,r_remarks,p_id) VALUES ('','$addinfo','$p_id')";
+                if (!mysqli_query($link, $sql)) {
+                // echo "File uploaded successfully";
+                printf("Errormessage: %s\n", mysqli_error($link));
+                }
+              else {
+                echo "<script>window.alert('Project Updated Successfully');window.location = 'dashboard.php'</script>";
+                // header('Location: dashboard.html');
+                  }
+                }
+                else{
+                   echo "upload failed" ;    
+                }
+                // echo "<script>window.alert('".$_POST['p_id']."')</script>";
+              }
+            ?>
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
         <!-- <footer class="footer">

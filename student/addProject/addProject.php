@@ -251,7 +251,7 @@
       $pOut = $_POST["pOut"];
       $pGuide = $_POST["pGuide"];
       $pStudent = $_SESSION["s_id"];
-      $sql = "INSERT INTO projects(p_id,p_title, p_abs, p_obj, p_shr, p_intro, p_freq, p_mod, p_out,status, g_id, s_id) VALUES ('','$pTitle','".$pAbs."','".$pObj."','".$pSHR."','".$pIntro."','".$pFReq."','".$pMod."','".$pOut."',0,'$pGuide','$pStudent')";
+      $sql = "INSERT INTO projects(p_id,p_title, p_abs, p_obj, p_shr, p_intro, p_freq, p_mod, p_out,status, g_id, s_id,report) VALUES ('','$pTitle','".$pAbs."','".$pObj."','".$pSHR."','".$pIntro."','".$pFReq."','".$pMod."','".$pOut."',0,'$pGuide','$pStudent','NULL')";
       if (!mysqli_query($link, $sql)) { 
         // echo "File uploaded successfully";
         printf("Errormessage: %s\n", mysqli_error($link));
