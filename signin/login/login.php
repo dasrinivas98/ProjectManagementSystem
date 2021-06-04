@@ -46,7 +46,7 @@
 				$row = mysqli_fetch_row($result);
 				if($row[2] == $email)
 					if($row[3]==$pwd)
-					header('Location: ../../client/dashboard.html');
+					header('Location: ../../guide/dashboard.html');
 					else
 						echo "incorrect password";
 			}	
