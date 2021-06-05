@@ -1,0 +1,6 @@
+<script>console.log('uploads/BMS INSTITUTE OF TECHNOLOGY.pdf')</script><br />
+<b>Warning</b>:  Undefined array key "name" in <b>C:\xampp\htdocs\pms10\assests\fileslogic.php</b> on line <b>22</b><br />
+<br />
+<b>Warning</b>:  Undefined array key "name" in <b>C:\xampp\htdocs\pms10\assests\fileslogic.php</b> on line <b>23</b><br />
+<br />
+<b>Warning</b>:  readfile(uploads/): Failed to open stream: No such file or directory in <b>C:\xampp\htdocs\pms10\assests\fileslogic.php</b> on line <b>23</b><br />
