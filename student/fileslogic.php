@@ -1,10 +1,10 @@
-<!-- <?php
+<?php
  include('../assests/dbconnect.php');
 
 if (isset($_GET['pid'])) {
     $id = $_GET['pid'];
 
-
+    // fetch file to download from database
     $sql = "SELECT * FROM projects WHERE p_id=$id";
     $result = mysqli_query($link, $sql);
     $file = mysqli_fetch_assoc($result);
@@ -26,4 +26,4 @@ if (isset($_GET['pid'])) {
         echo"dont";
     }
 
-}?> -->
+}?>

@@ -1,5 +1,5 @@
 <?php
-	include('../assests/dbconnect.php');
+	// include('../assests/dbconnect.php');
 	if(isset($_POST["login"]))
 	{
 		$uname = $_POST["u_name"];

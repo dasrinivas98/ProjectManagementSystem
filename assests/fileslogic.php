@@ -4,13 +4,14 @@
 
 if (isset($_GET['pid'])) {
     $id = $_GET['pid'];
+    $files = $_GET['file'];
 
     // fetch file to download from database
-    $sql = "SELECT * FROM projects WHERE p_id=$id";
+    $sql = "SELECT $files as filename FROM projects WHERE p_id=$id";
     $result = mysqli_query($link, $sql);
     $file = mysqli_fetch_assoc($result);
     
-    $filepath = 'uploads/' . $file['report'];
+    $filepath = 'uploads/' . $file['filename'];
     echo "<script>console.log('".$filepath."')</script>";
     if (file_exists($filepath)) {
         header('Content-Description: File Transfer');
@@ -24,7 +25,7 @@ if (isset($_GET['pid'])) {
         exit;
     }
     else{
-        echo"dont";
+        echo $_GET['file'];
     }
 
 }?>

@@ -20,6 +20,7 @@
   <!-- End plugin css for this page -->
   <!-- inject:css -->
   <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
   <!-- endinject -->  
 </head>
 <body>
@@ -28,7 +29,7 @@
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="navbar-brand-wrapper d-flex justify-content-center">
         <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">  
-          <a class="navbar-brand brand-logo" href="../index.html"><img src="../images/logo.jpg" alt="logo"></a>
+          <a class="navbar-brand brand-logo" href="../index.html"><img src="../images/logo.jpg"style="width: 100%;" alt="logo"></a>
           <a class="navbar-brand brand-logo-mini" href="../index.html"><img src="../images/logomini.jpg" alt="logo"></a>
           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
             <span class="mdi mdi-sort-variant"></span>
@@ -166,12 +167,192 @@
                       </tr>
                     </thead>
                     <tbody>
+                    <?php 
+                                  $gid = $_SESSION["g_id"];
+                                  $sql = "select * from projects INNER JOIN students on projects.s_id = students.s_id where g_id = $gid";
+                                  if (!($result = mysqli_query($link, $sql))) { 
+                                    printf("Errormessage: %s\n", mysqli_error($link));
+                                }
+                                else {     
+                                    if(mysqli_num_rows($result) >0){
+                                      $i = 1;
+                                      while($row = mysqli_fetch_array($result)) {
+                                ?>
                         <tr>
-                          <td>Jacob</td>
-                          <td>53275531</td>
-                          <td>12 May 2017</td>
-                          <td><label class="badge badge-danger">Pending</label></td>
+                          <td><?php echo $i?></td>
+                          <td><?php echo $row['p_title'];?></td>
+                          <?php 
+                                      if($row['finalStatus'] == 0){
+                                        echo "<td><label class='text-danger'>In progress</label></td>";
+                                      }
+                                      else{
+                                        echo "<td><label class='text-success'>Completed</label></td>";
+                                      }
+                                  ?>
+                          <td><button type="button" class="btn btn-inverse-primary btn-fw" data-toggle="modal" data-target="#exampleModalCenter<?php echo $row['p_id'];?>">View</button></td>
                         </tr>
+                        <div class="modal fade" data-backdrop="static" data-keyboard="false" id="exampleModalCenter<?php echo $row['p_id'];?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Project details</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                              
+                              <?php
+                                //   $pid = $row['p_id'];
+                                //    $sql = "select * from projects INNER JOIN students on projects.s_id = students.s_id where p_id = $pid";
+                                //    if (!($result = mysqli_query($link, $sql))) { 
+                                //      printf("Errormessage: %s\n", mysqli_error($link));
+                                //  }
+                                //  else {   
+                                //   if(mysqli_num_rows($result) >0){
+                                //     $i = 1;
+                                //     while($row = mysqli_fetch_array($result)) {  
+                              ?>
+                                  <div class="card-body">
+                                  <form class="forms-sample" action="dashboard.php" method="POST" enctype="multipart/form-data">
+                                          <div class="form-group row">
+                                            <div class="col-6">
+                                              <label class="font-weight-bold">Student name</label>
+                                              <div><?php echo $row['s_name'];?></div>
+                                            </div>
+                                            <div class="col-6">
+                                              <label class="font-weight-bold">USN</label>
+                                              <div><?php echo $row['s_usn'];?></div>
+                                            </div>
+                                          </div>
+                                          <div class="form-group">
+                                          <label class="font-weight-bold">Project title</label>
+                                            <div><?php echo $row['p_title'];?></div>
+                                          </div>
+                                          <div class="form-group">
+                                            <label class="font-weight-bold">Abstract</label>
+                                            <div><?php echo $row['p_abs'];?></div>
+                                          </div>
+                                          <div class="form-group">
+                                            <label class="font-weight-bold">Abstract</label>
+                                            <div><?php echo $row['p_obj'];?></div>
+                                          </div>
+                                          <div class="form-group">
+                                            <label class="font-weight-bold">Software and hardware requirements</label>
+                                            <div><?php echo $row['p_shr'];?></div>
+                                          </div>
+                                          <div class="form-group">
+                                            <label class="font-weight-bold">Introduction</label>
+                                            <div><?php echo $row['p_intro'];?></div>
+                                          </div>
+                                          <div class="form-group">
+                                            <label class="font-weight-bold">Functional requirements</label>
+                                            <div><?php echo $row['p_freq'];?></div>
+                                          </div>
+                                          <div class="form-group">
+                                            <label class="font-weight-bold">Modules</label>
+                                            <div><?php echo $row['p_mod'];?></div>
+                                          </div>
+                                          <div class="form-group">
+                                            <label class="font-weight-bold">Outcome</label>
+                                            <div><?php echo $row['p_out'];?></div>
+                                          </div>
+                                          <div class="form-group row">
+                                            <div class="col-4">
+                                              <label class="font-weight-bold">Phase</label>
+                                            </div>
+                                            <div class="col-4">
+                                            <div><label class="font-weight-bold">Status</label></div>
+                                            </div>
+                                            <div class="col-4">
+                                            <div><label class="font-weight-bold">File</label></div>
+                                            </div>
+                                          </div>
+                                          <div class="form-group row">
+                                            <div class="col-4">
+                                              <label class="font-weight-bold">Development</label>
+                                            </div>
+                                            <div class="col-4">
+                                            <?php if(($row['d_status']==1)){
+                                              echo "<div class='text-success'>Completed</div>";}else 
+                                              echo "<div class='text-danger'>Not completed</div>";?>
+                                            </div>
+                                            <div class="col-4">
+                                            <?php if((isset($row['d_report'])&&$row['d_report']!='NULL')){
+                                               $pid = $row["p_id"];
+                                               $report = 'd_report';
+                                              echo '<div class="text-success"><a href="../assests/fileslogic.php?pid='.$pid.'&file='.$report.'">Download Report</a></div>';}else 
+                                              echo "<div class='text-danger'>No file</div>";?>
+                                            </div>
+                                          </div>
+                                          <div class="form-group row">
+                                            <div class="col-4">
+                                              <label class="font-weight-bold">Testing</label>
+                                            </div>
+                                            <div class="col-4">
+                                            <?php if(($row['t_status']==1)){
+                                              echo "<div class='text-success'>Completed</div>";}else 
+                                              echo "<div class='text-danger'>Not completed</div>";?>
+                                            </div>
+                                            <div class="col-4">
+                                            <?php if((isset($row['t_report'])&&$row['t_report']!='NULL')){
+                                               $pid = $row["p_id"];
+                                               $report = 't_report';
+                                              echo '<div class="text-success"><a href="../assests/fileslogic.php?pid='.$pid.'&file='.$report.'">Download Report</a></div>';}else 
+                                              echo "<div class='text-danger'>No Document</div>";?>
+                                            </div>
+                                          </div>
+                                          <div class="form-group row">
+                                            <div class="col-4">
+                                              <label class="font-weight-bold">Report</label>
+                                            </div>
+                                            <div class="col-4">
+                                            <?php if(($row['status']==1)){
+                                              echo "<div class='text-success'>Completed</div>";}else 
+                                              echo "<div class='text-danger'>Not completed</div>";?>
+                                            </div>
+                                            <div class="col-4">
+                                            <?php if((isset($row['report'])&&$row['report']!='NULL')){
+                                               $pid = $row["p_id"];
+                                               $report = 'report';
+                                              echo '<div class="text-success"><a href="../assests/fileslogic.php?pid='.$pid.'&file='.$report.'">Download Report</a></div>';}else 
+                                              echo "<div class='text-danger'>No Document</div>";?>
+                                            </div>
+                                          </div>
+                                          <div class="form-group" id="txtEditor">
+                                            <label for="exampleTextarea1">Remarks</label>
+                                            <textarea id="editor<?php echo $row['p_id'];?>" class="form-control" name="remarks" placeholder="Add remarks if any"></textarea>
+                                          </div>
+                                          <script>
+                                            tinymce.init({
+                                              selector: 'textarea#editor<?php echo $row['p_id'];?>',
+                                              menubar: false,
+                                              toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist',
+                                            });
+                                          </script>
+                                          <input type="hidden" name="pid" value="<?php echo $row['p_id'];?>">
+                                          <div class="form-check form-check-primary">
+                                            <label class="form-check-label">
+                                              <input type="checkbox" class="form-check-input" name="final" value=1>
+                                              I acknowledge that i have gone through the "<?php echo $row['p_title'];?>" a project by <?php echo $row['s_name'];?> and accept the final submission of the same.
+                                            </label>
+                                          </div>
+                                          <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <input type="submit" class="btn btn-primary" name="saveR">
+                                          </div>
+                                       </form>   
+                                      </div>
+                                        
+                              
+                              <!-- <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save</button>
+                              </div> -->
+                            </div>
+                          </div>
+                        </div>
+                        <?php $i++;}}}?>
                     </tbody>
                   </table> 
                 </div>
@@ -180,329 +361,32 @@
           </div>     
         </div>
      </div> 
-          <!-- <div class="row">
-            <div class="col-md-12 grid-margin">
-              <div class="d-flex justify-content-between flex-wrap">
-                <div class="d-flex align-items-end flex-wrap">
-                  <div class="mr-md-3 mr-xl-5">
-                    <h2>Welcome back,</h2>
-                    <p class="mb-md-0">Your analytics dashboard template.</p>
-                  </div>
-                  <div class="d-flex">
-                    <i class="mdi mdi-home text-muted hover-cursor"></i>
-                    <p class="text-muted mb-0 hover-cursor">&nbsp;/&nbsp;Dashboard&nbsp;/&nbsp;</p>
-                    <p class="text-primary mb-0 hover-cursor">Analytics</p>
-                  </div>
-                </div>
-                <div class="d-flex justify-content-between align-items-end flex-wrap">
-                  <button type="button" class="btn btn-light bg-white btn-icon mr-3 d-none d-md-block ">
-                    <i class="mdi mdi-download text-muted"></i>
-                  </button>
-                  <button type="button" class="btn btn-light bg-white btn-icon mr-3 mt-2 mt-xl-0">
-                    <i class="mdi mdi-clock-outline text-muted"></i>
-                  </button>
-                  <button type="button" class="btn btn-light bg-white btn-icon mr-3 mt-2 mt-xl-0">
-                    <i class="mdi mdi-plus text-muted"></i>
-                  </button>
-                  <button class="btn btn-primary mt-2 mt-xl-0">Generate report</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row" id="proBanner">
-            <div class="col-md-12 grid-margin">
-              <div class="card bg-gradient-primary border-0">
-                <div class="card-body py-3 px-4 d-flex align-items-center justify-content-between flex-wrap">
-                  <p class="mb-0 text-white font-weight-medium">Get tons of UI components, Plugins, multiple layouts, 20+ sample pages, and more!                  </p>
-                  <div class="d-flex">
-                    <a href="https://www.bootstrapdash.com/product/majestic-admin-pro?utm_source=organic&utm_medium=banner&utm_campaign=free-preview" target="_blank" class="btn btn-outline-light mr-2 bg-gradient-danger border-0">Check Pro Version</a>
-                    <button id="bannerClose" class="btn border-0 p-0 ml-auto">
-                      <i class="mdi mdi-close text-white"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body dashboard-tabs p-0">
-                  <ul class="nav nav-tabs px-4" role="tablist">
-                    <li class="nav-item">
-                      <a class="nav-link active" id="overview-tab" data-toggle="tab" href="#overview" role="tab" aria-controls="overview" aria-selected="true">Overview</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" id="sales-tab" data-toggle="tab" href="#sales" role="tab" aria-controls="sales" aria-selected="false">Sales</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" id="purchases-tab" data-toggle="tab" href="#purchases" role="tab" aria-controls="purchases" aria-selected="false">Purchases</a>
-                    </li>
-                  </ul>
-                  <div class="tab-content py-0 px-0">
-                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
-                      <div class="d-flex flex-wrap justify-content-xl-between">
-                        <div class="d-none d-xl-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-calendar-heart icon-lg mr-3 text-primary"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">Start date</small>
-                            <div class="dropdown">
-                              <a class="btn btn-secondary dropdown-toggle p-0 bg-transparent border-0 text-dark shadow-none font-weight-medium" href="#" role="button" id="dropdownMenuLinkA" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <h5 class="mb-0 d-inline-block">26 Jul 2018</h5>
-                              </a>
-                              <div class="dropdown-menu" aria-labelledby="dropdownMenuLinkA">
-                                <a class="dropdown-item" href="#">12 Aug 2018</a>
-                                <a class="dropdown-item" href="#">22 Sep 2018</a>
-                                <a class="dropdown-item" href="#">21 Oct 2018</a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-currency-usd mr-3 icon-lg text-danger"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">Revenue</small>
-                            <h5 class="mr-2 mb-0">$577545</h5>
-                          </div>
-                        </div>
-                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-eye mr-3 icon-lg text-success"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">Total views</small>
-                            <h5 class="mr-2 mb-0">9833550</h5>
-                          </div>
-                        </div>
-                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-download mr-3 icon-lg text-warning"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">Downloads</small>
-                            <h5 class="mr-2 mb-0">2233783</h5>
-                          </div>
-                        </div>
-                        <div class="d-flex py-3 border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-flag mr-3 icon-lg text-danger"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">Flagged</small>
-                            <h5 class="mr-2 mb-0">3497843</h5>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="tab-pane fade" id="sales" role="tabpanel" aria-labelledby="sales-tab">
-                      <div class="d-flex flex-wrap justify-content-xl-between">
-                        <div class="d-none d-xl-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-calendar-heart icon-lg mr-3 text-primary"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">Start date</small>
-                            <div class="dropdown">
-                              <a class="btn btn-secondary dropdown-toggle p-0 bg-transparent border-0 text-dark shadow-none font-weight-medium" href="#" role="button" id="dropdownMenuLinkA" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <h5 class="mb-0 d-inline-block">26 Jul 2018</h5>
-                              </a>
-                              <div class="dropdown-menu" aria-labelledby="dropdownMenuLinkA">
-                                <a class="dropdown-item" href="#">12 Aug 2018</a>
-                                <a class="dropdown-item" href="#">22 Sep 2018</a>
-                                <a class="dropdown-item" href="#">21 Oct 2018</a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-download mr-3 icon-lg text-warning"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">Downloads</small>
-                            <h5 class="mr-2 mb-0">2233783</h5>
-                          </div>
-                        </div>
-                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-eye mr-3 icon-lg text-success"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">Total views</small>
-                            <h5 class="mr-2 mb-0">9833550</h5>
-                          </div>
-                        </div>
-                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-currency-usd mr-3 icon-lg text-danger"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">Revenue</small>
-                            <h5 class="mr-2 mb-0">$577545</h5>
-                          </div>
-                        </div>
-                        <div class="d-flex py-3 border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-flag mr-3 icon-lg text-danger"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">Flagged</small>
-                            <h5 class="mr-2 mb-0">3497843</h5>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="tab-pane fade" id="purchases" role="tabpanel" aria-labelledby="purchases-tab">
-                      <div class="d-flex flex-wrap justify-content-xl-between">
-                        <div class="d-none d-xl-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-calendar-heart icon-lg mr-3 text-primary"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">Start date</small>
-                            <div class="dropdown">
-                              <a class="btn btn-secondary dropdown-toggle p-0 bg-transparent border-0 text-dark shadow-none font-weight-medium" href="#" role="button" id="dropdownMenuLinkA" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <h5 class="mb-0 d-inline-block">26 Jul 2018</h5>
-                              </a>
-                              <div class="dropdown-menu" aria-labelledby="dropdownMenuLinkA">
-                                <a class="dropdown-item" href="#">12 Aug 2018</a>
-                                <a class="dropdown-item" href="#">22 Sep 2018</a>
-                                <a class="dropdown-item" href="#">21 Oct 2018</a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-currency-usd mr-3 icon-lg text-danger"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">Revenue</small>
-                            <h5 class="mr-2 mb-0">$577545</h5>
-                          </div>
-                        </div>
-                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-eye mr-3 icon-lg text-success"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">Total views</small>
-                            <h5 class="mr-2 mb-0">9833550</h5>
-                          </div>
-                        </div>
-                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-download mr-3 icon-lg text-warning"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">Downloads</small>
-                            <h5 class="mr-2 mb-0">2233783</h5>
-                          </div>
-                        </div>
-                        <div class="d-flex py-3 border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <i class="mdi mdi-flag mr-3 icon-lg text-danger"></i>
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">Flagged</small>
-                            <h5 class="mr-2 mb-0">3497843</h5>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-7 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <p class="card-title">Cash deposits</p>
-                  <p class="mb-4">To start a blog, think of a topic about and first brainstorm party is ways to write details</p>
-                  <div id="cash-deposits-chart-legend" class="d-flex justify-content-center pt-3"></div>
-                  <canvas id="cash-deposits-chart"></canvas>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-5 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <p class="card-title">Total sales</p>
-                  <h1>$ 28835</h1>
-                  <h4>Gross sales over the years</h4>
-                  <p class="text-muted">Today, many people rely on computers to do homework, work, and create or store useful information. Therefore, it is important </p>
-                  <div id="total-sales-chart-legend"></div>                  
-                </div>
-                <canvas id="total-sales-chart"></canvas>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12 stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <p class="card-title">Recent Purchases</p>
-                  <div class="table-responsive">
-                    <table id="recent-purchases-listing" class="table">
-                      <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Status report</th>
-                            <th>Office</th>
-                            <th>Price</th>
-                            <th>Date</th>
-                            <th>Gross amount</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                            <td>Jeremy Ortega</td>
-                            <td>Levelled up</td>
-                            <td>Catalinaborough</td>
-                            <td>$790</td>
-                            <td>06 Jan 2018</td>
-                            <td>$2274253</td>
-                        </tr>
-                        <tr>
-                            <td>Alvin Fisher</td>
-                            <td>Ui design completed</td>
-                            <td>East Mayra</td>
-                            <td>$23230</td>
-                            <td>18 Jul 2018</td>
-                            <td>$83127</td>
-                        </tr>
-                        <tr>
-                            <td>Emily Cunningham</td>
-                            <td>support</td>
-                            <td>Makennaton</td>
-                            <td>$939</td>
-                            <td>16 Jul 2018</td>
-                            <td>$29177</td>
-                        </tr>
-                        <tr>
-                            <td>Minnie Farmer</td>
-                            <td>support</td>
-                            <td>Agustinaborough</td>
-                            <td>$30</td>
-                            <td>30 Apr 2018</td>
-                            <td>$44617</td>
-                        </tr>
-                        <tr>
-                            <td>Betty Hunt</td>
-                            <td>Ui design not completed</td>
-                            <td>Lake Sandrafort</td>
-                            <td>$571</td>
-                            <td>25 Jun 2018</td>
-                            <td>$78952</td>
-                        </tr>
-                        <tr>
-                            <td>Myrtie Lambert</td>
-                            <td>Ui design completed</td>
-                            <td>Cassinbury</td>
-                            <td>$36</td>
-                            <td>05 Nov 2018</td>
-                            <td>$36422</td>
-                        </tr>
-                        <tr>
-                            <td>Jacob Kennedy</td>
-                            <td>New project</td>
-                            <td>Cletaborough</td>
-                            <td>$314</td>
-                            <td>12 Jul 2018</td>
-                            <td>$34167</td>
-                        </tr>
-                        <tr>
-                            <td>Ernest Wade</td>
-                            <td>Levelled up</td>
-                            <td>West Fidelmouth</td>
-                            <td>$484</td>
-                            <td>08 Sep 2018</td>
-                            <td>$50862</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
+     <?php  if(isset($_POST['saveR']))
+              {
+                $p_id = $_POST['pid'];
+                 if(($_POST['remarks'] == '')){
+                   $remarks = "NULL";
+                 }else{
+                  $remarks = $_POST['remarks'];
+                 }
+                  if(($_POST['final'] == '')){
+                        $final = 0;
+                      }
+                      else{
+                        $final = $_POST['final'];
+                      }
+                      $sql1 = "UPDATE projects SET remarks = '$remarks',finalStatus = '$final' WHERE p_id = '$p_id' ";
+                      if (!mysqli_query($link, $sql1)) {
+                        // echo "File uploaded successfully";
+                        printf("Errormessage: %s\n", mysqli_error($link));
+                        }
+                      else {
+                        echo "<script>window.alert('Status Updated Successfully');window.location = 'dashboard.php'</script>";
+                      }
+                    
+              }        
+      ?>
+                                           
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
         <!-- <footer class="footer">

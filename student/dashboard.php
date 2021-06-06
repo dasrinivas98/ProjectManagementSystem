@@ -20,6 +20,7 @@
   <!-- End plugin css for this page -->
   <!-- inject:css -->
   <link rel="stylesheet" href="../css/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <!-- endinject -->  
 </head>
 <body>
@@ -156,11 +157,21 @@
                                       }
                                   ?>
                                     <td><button type="button" class="btn btn-inverse-primary btn-fw"
-                                      data-toggle="collapse" data-target="#demo<?php echo $row['p_id'];?>">Update</button></td>
+                                    data-toggle="modal" data-target="#exampleModal<?php echo $row['p_id'];?>">Update</button></td>
                                 </tr>
-                                <div id="demo<?php echo $row['p_id'];?>" class="card col-lg-12 grid-margin stretch-card collapse shadow p-3 mb-5 bg-white rounded">
-                                  <div class="card-body">
-                                    <h4 class="card-title">Project Status</h4>
+                                
+                                <div class="modal fade" data-backdrop="static" data-keyboard="false" id="exampleModal<?php echo $row['p_id'];?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                  <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Project Status</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                      </div>
+                                    <div class="modal-body">
+                                    <div class="card-body">
+                                    <h4 class="card-title"><?php echo $row['p_title'];?></h4>
                                     <div class="card shadow p-3 mb-5 bg-white rounded">
                                       <!-- <div class="card-body">
                                         <form class="forms-sample" action="dashboard.php" method="POST" enctype="multipart/form-data">
@@ -210,30 +221,30 @@
                                       </div>   -->
                                       <ul class="nav nav-pills nav-justified" id="myTab" role="tablist">
                                           <li class="nav-item" style="text-align: center;">
-                                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#develop" role="tab" aria-controls="home" aria-selected="true">Development</a>
+                                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#develop<?php echo $row['p_id'];?>" role="tab" aria-controls="home" aria-selected="true">Development</a>
                                           </li>
                                           <li class="nav-item" style="text-align: center;">
-                                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#testing" role="tab" aria-controls="profile" aria-selected="false">Testing</a>
+                                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#testing<?php echo $row['p_id'];?>" role="tab" aria-controls="profile" aria-selected="false">Testing</a>
                                           </li>
                                           <li class="nav-item" style="text-align: center;">
-                                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#report" role="tab" aria-controls="profile" aria-selected="false">Report</a>
+                                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#report<?php echo $row['p_id'];?>" role="tab" aria-controls="profile" aria-selected="false">Report</a>
                                           </li>
                                       </ul>   
                                       <div class="tab-content" id="myTabContent">
-                                        <div class="tab-pane fade show active" id="develop" role="tabpanel" aria-labelledby="home-tab">
+                                        <div class="tab-pane fade show active" id="develop<?php echo $row['p_id'];?>" role="tabpanel" aria-labelledby="home-tab">
                                         <div class="card-body">
                                         <form class="forms-sample" action="dashboard.php" method="POST" enctype="multipart/form-data">
                                           <div class="form-group">
                                             <label>Status</label>
                                             <div class="form-check">
                                               <label class="form-check-label">
-                                              <input type="radio" class="form-check-input" name="status" id="optionsRadios1" value="0" checked>
+                                              <input type="radio" class="form-check-input" name="status" id="optionsRadios1" value="0" <?php echo($row['d_status']==0 ? 'checked' : '');?>>
                                               In progress
                                               </label>
                                            </div>
                                            <div class="form-check">
                                             <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="status" id="optionsRadios2" value="1">
+                                            <input type="radio" class="form-check-input" name="status" id="optionsRadios2" value="1" <?php echo($row['d_status']==1 ? 'checked' : '');?>>
                                              Completed
                                             </label>
                                            </div>
@@ -247,13 +258,14 @@
                                           if($row['d_report']== 'NULL' || $row['d_report']== ''){
                                           echo "<label>Add Project report</label>
                                           <div class='form-group' id='txtEditor'>
-                                          <input type='file' name = 'pFiles'></div>";
-                                          $_SESSION["isfile"] = 0;
+                                          <input type='file' name = 'pFiles' required><div class='invalid-feedback'>Please select a file</div></div>";
+                                          // $_SESSION["isfile"] = 0;
                                           }
                                           else{
                                           $pid = $row["p_id"];
                                           $report = $row['d_report'];
-                                          $_SESSION["isfile"] = 1;
+                                          // echo "<input type='hidden' name="" value='".$row['d_report']."'>"
+                                          // $_SESSION["isfile"] = 1;
                                           // echo "<input type='hidden' name = 'pFiles' value='".$report."'>";
                                           // echo '<from action="../assests/fileslogic.php" method="POST">
                                           //   <input type="hidden" value="'.$pid.'" name="pid">
@@ -266,25 +278,26 @@
                                           }
                                           ?>
                                           <div>
-                                            <input  type="submit" name="Dsave" value="save" class="btn btn-primary">
+                                            <!-- <button type="button" class="btn btn-secondary" data-dismiss="<?php echo $row['p_id'];?>card">Close</button> -->
+                                            <input  type="submit" name="Dsave" value="Save" class="btn btn-primary">
                                           </div>
                                         </form>
                                       </div>            
                                         </div>
-                                        <div class="tab-pane fade" id="testing" role="tabpanel" aria-labelledby="home-tab">
+                                        <div class="tab-pane fade" id="testing<?php echo $row['p_id'];?>" role="tabpanel" aria-labelledby="home-tab">
                                         <div class="card-body">
                                         <form class="forms-sample" action="dashboard.php" method="POST" enctype="multipart/form-data">
                                           <div class="form-group">
                                             <label>Status</label>
                                             <div class="form-check">
                                               <label class="form-check-label">
-                                              <input type="radio" class="form-check-input" name="status" id="optionsRadios1" value="0" checked>
+                                              <input type="radio" class="form-check-input" name="t_status" id="optionsRadios1" value="0" <?php echo($row['t_status']==0 ? 'checked' : '');?>>
                                               In progress
                                               </label>
                                            </div>
                                            <div class="form-check">
                                             <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="status" id="optionsRadios2" value="1">
+                                            <input type="radio" class="form-check-input" name="t_status" id="optionsRadios2" value="1" <?php echo($row['t_status']==1 ? 'checked' : '');?>>
                                              Completed
                                             </label>
                                            </div>
@@ -296,14 +309,14 @@
                                           </div> -->
                                           <input type='hidden' name='p_id' value="<?php echo $row['p_id']?>"/>
                                           <?php
-                                          if($row['report']== 'NULL' || $row['report']== ''){
+                                          if($row['t_report']== 'NULL' || $row['t_report']== ''){
                                           echo "<label>Add Project report</label>
                                           <div class='form-group' id='txtEditor'>
-                                          <input type='file' name = 'pFiles'></div>";
+                                          <input type='file' name = 'pFiles'required><div class='invalid-feedback'>Please select a file</div></div>";
                                           }
                                           else{
                                           $pid = $row["p_id"];
-                                          $report = $row['report'];
+                                          $report = $row['t_report'];
                                           // echo '<from action="../assests/fileslogic.php" method="POST">
                                           //   <input type="hidden" value="'.$pid.'" name="pid">
                                           //   <input  type="submit" name="download" value="Download Report" class="btn btn-primary">
@@ -315,25 +328,25 @@
                                           }
                                           ?>
                                           <div>
-                                            <input  type="submit" name="Tsave" value="save" class="btn btn-primary">
+                                            <input  type="submit" name="Tsave" value="Save" class="btn btn-primary">
                                           </div>
                                         </form>
                                       </div>
                                         </div>
-                                        <div class="tab-pane fade " id="report" role="tabpanel" aria-labelledby="home-tab">
+                                        <div class="tab-pane fade " id="report<?php echo $row['p_id'];?>" role="tabpanel" aria-labelledby="home-tab">
                                         <div class="card-body">
                                         <form class="forms-sample" action="dashboard.php" method="POST" enctype="multipart/form-data">
                                           <div class="form-group">
                                             <label>Status</label>
                                             <div class="form-check">
                                               <label class="form-check-label">
-                                              <input type="radio" class="form-check-input" name="status" id="optionsRadios1" value="0" checked>
+                                              <input type="radio" class="form-check-input" name="status" id="optionsRadios1" value="0" <?php echo($row['status']==0 ? 'checked' : '');?>>
                                               In progress
                                               </label>
                                            </div>
                                            <div class="form-check">
                                             <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="status" id="optionsRadios2" value="1">
+                                            <input type="radio" class="form-check-input" name="status" id="optionsRadios2" value="1" <?php echo($row['status']==1 ? 'checked' : '');?>>
                                              Completed
                                             </label>
                                            </div>
@@ -348,7 +361,7 @@
                                           if($row['report']== 'NULL' || $row['report']== ''){
                                           echo "<label>Add Project report</label>
                                           <div class='form-group' id='txtEditor'>
-                                          <input type='file' name = 'pFiles'></div>";
+                                          <input type='file' name = 'pFiles' required><div class='invalid-feedback'>Please select a file</div></div>";
                                           }
                                           else{
                                           $pid = $row["p_id"];
@@ -364,7 +377,7 @@
                                           }
                                           ?>
                                           <div>
-                                            <input  type="submit" name="Rsave" value="save" class="btn btn-primary">
+                                            <input  type="submit" name="Rsave" value="Save" class="btn btn-primary">
                                           </div>
                                         </form>
                                       </div>
@@ -372,7 +385,24 @@
                                       </div>
                                     </div>  
                                   </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                      <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                                      <script>
+                                          $(function () {
+                                       // when the modal is closed
+                                      $("#exampleModal<?php echo $row['p_id'];?>").on('hidden.bs.modal', function () {
+                                          console.log("closed");
+                                      $(this).removeData('bs.modal');
+                                      // and empty the modal-content element
+                                        });
+                                      });
+                                      </script>
+                                    </div>
+                                  </div>
                                 </div>
+                              </div>
                                 <!-- Modal
                                 <div class="modal fade" id="exampleModal<?php echo $row['p_id'];?>">
                                 <?php $_SESSION['p_id'] = $row['p_id'];?>
@@ -451,9 +481,20 @@
             <?php
               if(isset($_POST['Dsave']))
               {
+                if(!isset($_FILES['pFiles'])){
+                  $p_id =  $_POST['p_id'];
+                  $status =  $_POST['status'];
+                  $sql1 = "UPDATE projects SET d_status = '$status' WHERE p_id = '$p_id' ";
+                  if (!mysqli_query($link, $sql1)) {
+                    // echo "File uploaded successfully";
+                    printf("Errormessage: %s\n", mysqli_error($link));
+                    }
+                  else {
+                    echo "<script>window.alert('Status Updated Successfully');window.location = 'dashboard.php'</script>";
+                  }
+                }else{
                 $p_id =  $_POST['p_id'];
                 $status =  $_POST['status'];
-                echo $_SESSION['isfile'];
                 $filename = $_FILES['pFiles']['name'];
                 
                 $sql1 = "UPDATE projects SET d_status = '$status', d_report = '$filename' WHERE p_id = '$p_id' ";
@@ -461,7 +502,7 @@
                   // echo "File uploaded successfully";
                   printf("Errormessage: %s\n", mysqli_error($link));
                   }
-                // else {
+                else {
                 //        echo "updated status";
                 //     }
                 // $filename = $_POST['pFiles'];
@@ -482,52 +523,78 @@
               //     }
                 }
                 else{
-                   echo "upload failed" ;    
+                   echo "<script>window.alert('Please select a file');</script>" ;    
                 }
-                // echo "<script>window.alert('".$_POST['p_id']."')</script>";
+              }// echo "<script>window.alert('".$_POST['p_id']."')</script>";
               }
+            }
               if(isset($_POST['Tsave']))
               {
+                if(!isset($_FILES['pFiles'])){
+                  $p_id =  $_POST['p_id'];
+                  $status =  $_POST['t_status'];
+                  $sql1 = "UPDATE projects SET t_status = '$status' WHERE p_id = '$p_id' ";
+                  if (!mysqli_query($link, $sql1)) {
+                    // echo "File uploaded successfully";
+                    printf("Errormessage: %s\n", mysqli_error($link));
+                    }
+                  else {
+                    echo "<script>window.alert('Status Updated Successfully');window.location = 'dashboard.php'</script>";
+                  }
+                }else{
                 $p_id =  $_POST['p_id'];
-                $status =  $_POST['status'];
-                $addinfo = $_POST['addinfo'];
+                $t_status =  $_POST['t_status'];
+                // $addinfo = $_POST['addinfo'];
 
                 $filename = $_FILES['pFiles']['name'];
-                $sql1 = "UPDATE projects SET status = '$status', report = '$filename' WHERE p_id = '$p_id' ";
+                $sql1 = "UPDATE projects SET t_status = '$t_status', t_report = '$filename' WHERE p_id = '$p_id' ";
                 if (!mysqli_query($link, $sql1)) {
                   // echo "File uploaded successfully";
                   printf("Errormessage: %s\n", mysqli_error($link));
                   }
-                // else {
-                //        echo "updated status";
-                //     }
-                // $filename = $_POST['pFiles'];
-                $destination = '../assests/uploads/' . $filename;
-                // echo($destination);
-                $extension = pathinfo($filename, PATHINFO_EXTENSION);
-                $file = $_FILES['pFiles']['tmp_name'];
-                $size = $_FILES['pFiles']['size'];
-                if (move_uploaded_file($file, $destination)) {
-                $sql = "INSERT INTO reports(r_id,r_remarks,p_id) VALUES ('','$addinfo','$p_id')";
-                if (!mysqli_query($link, $sql)) {
-                // echo "File uploaded successfully";
-                printf("Errormessage: %s\n", mysqli_error($link));
-                }
-              else {
-                echo "<script>window.alert('Project Updated Successfully');window.location = 'dashboard.php'</script>";
-                // header('Location: dashboard.html');
+                  else {
+                    //        echo "updated status";
+                    //     }
+                    // $filename = $_POST['pFiles'];
+                    $destination = '../assests/uploads/' . $filename;
+                    // echo($destination);
+                    $extension = pathinfo($filename, PATHINFO_EXTENSION);
+                    $file = $_FILES['pFiles']['tmp_name'];
+                    $size = $_FILES['pFiles']['size'];
+                    if (move_uploaded_file($file, $destination)) {
+                  //   $sql = "INSERT INTO reports(r_id,r_remarks,p_id) VALUES ('','$addinfo','$p_id')";
+                  //   if (!mysqli_query($link, $sql)) {
+                  //   // echo "File uploaded successfully";
+                  //   printf("Errormessage: %s\n", mysqli_error($link));
+                  //   }
+                  // else {
+                    echo "<script>window.alert('Project Updated Successfully');window.location = 'dashboard.php'</script>";
+                    // header('Location: dashboard.html');
+                  //     }
+                    }
+                    else{
+                       echo "<script>window.alert('Please select a file');</script>" ;    
+                    }
+                  }// echo "<script>window.alert('".$_POST['p_id']."')</script>";
                   }
                 }
-                else{
-                   echo "upload failed" ;    
-                }
-                // echo "<script>window.alert('".$_POST['p_id']."')</script>";
-              }
               if(isset($_POST['Rsave']))
               {
+                if(!isset($_FILES['pFiles'])){
+                  $p_id =  $_POST['p_id'];
+                  $status =  $_POST['status'];
+                  $sql1 = "UPDATE projects SET status = '$status' WHERE p_id = '$p_id' ";
+                  if (!mysqli_query($link, $sql1)) {
+                    // echo "File uploaded successfully";
+                    printf("Errormessage: %s\n", mysqli_error($link));
+                    }
+                  else {
+                    echo "<script>window.alert('Status Updated Successfully');window.location = 'dashboard.php'</script>";
+                  }
+                }else{
                 $p_id =  $_POST['p_id'];
                 $status =  $_POST['status'];
-                $addinfo = $_POST['addinfo'];
+                // $addinfo = $_POST['addinfo'];
 
                 $filename = $_FILES['pFiles']['name'];
                 $sql1 = "UPDATE projects SET status = '$status', report = '$filename' WHERE p_id = '$p_id' ";
@@ -535,31 +602,32 @@
                   // echo "File uploaded successfully";
                   printf("Errormessage: %s\n", mysqli_error($link));
                   }
-                // else {
-                //        echo "updated status";
-                //     }
-                // $filename = $_POST['pFiles'];
-                $destination = '../assests/uploads/' . $filename;
-                // echo($destination);
-                $extension = pathinfo($filename, PATHINFO_EXTENSION);
-                $file = $_FILES['pFiles']['tmp_name'];
-                $size = $_FILES['pFiles']['size'];
-                if (move_uploaded_file($file, $destination)) {
-                $sql = "INSERT INTO reports(r_id,r_remarks,p_id) VALUES ('','$addinfo','$p_id')";
-                if (!mysqli_query($link, $sql)) {
-                // echo "File uploaded successfully";
-                printf("Errormessage: %s\n", mysqli_error($link));
-                }
-              else {
-                echo "<script>window.alert('Project Updated Successfully');window.location = 'dashboard.php'</script>";
-                // header('Location: dashboard.html');
+                  else {
+                    //        echo "updated status";
+                    //     }
+                    // $filename = $_POST['pFiles'];
+                    $destination = '../assests/uploads/' . $filename;
+                    // echo($destination);
+                    $extension = pathinfo($filename, PATHINFO_EXTENSION);
+                    $file = $_FILES['pFiles']['tmp_name'];
+                    $size = $_FILES['pFiles']['size'];
+                    if (move_uploaded_file($file, $destination)) {
+                  //   $sql = "INSERT INTO reports(r_id,r_remarks,p_id) VALUES ('','$addinfo','$p_id')";
+                  //   if (!mysqli_query($link, $sql)) {
+                  //   // echo "File uploaded successfully";
+                  //   printf("Errormessage: %s\n", mysqli_error($link));
+                  //   }
+                  // else {
+                    echo "<script>window.alert('Project Updated Successfully');window.location = 'dashboard.php'</script>";
+                    // header('Location: dashboard.html');
+                  //     }
+                    }
+                    else{
+                       echo "<script>window.alert('Please select a file');</script>" ;    
+                    }
+                  }// echo "<script>window.alert('".$_POST['p_id']."')</script>";
                   }
                 }
-                else{
-                   echo "upload failed" ;    
-                }
-                // echo "<script>window.alert('".$_POST['p_id']."')</script>";
-              }
             ?>
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
