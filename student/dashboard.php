@@ -149,7 +149,7 @@
                                   <td><?php echo $i?></td>
                                   <td><?php echo $row['p_title'];?></td>
                                   <?php 
-                                      if($row['status'] == 0){
+                                      if($row['finalStatus'] == 0){
                                         echo "<td><label class='text-danger'>In progress</label></td>";
                                       }
                                       else{
@@ -224,10 +224,10 @@
                                             <a class="nav-link active" id="home-tab" data-toggle="tab" href="#develop<?php echo $row['p_id'];?>" role="tab" aria-controls="home" aria-selected="true">Development</a>
                                           </li>
                                           <li class="nav-item" style="text-align: center;">
-                                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#testing<?php echo $row['p_id'];?>" role="tab" aria-controls="profile" aria-selected="false">Testing</a>
+                                            <a class="nav-link <?php echo ($row['d_status']==0? ' disabled' : '');?>" id="profile-tab" data-toggle="tab" href="#testing<?php echo $row['p_id'];?>" role="tab" aria-controls="profile" aria-selected="false">Testing</a>
                                           </li>
                                           <li class="nav-item" style="text-align: center;">
-                                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#report<?php echo $row['p_id'];?>" role="tab" aria-controls="profile" aria-selected="false">Report</a>
+                                            <a class="nav-link <?php echo ($row['t_status']==0? 'disabled' : '');?>" id="profile-tab"  data-toggle="tab" href="#report<?php echo $row['p_id'];?>" role="tab" aria-controls="profile" aria-selected="false">Report</a>
                                           </li>
                                       </ul>   
                                       <div class="tab-content" id="myTabContent">

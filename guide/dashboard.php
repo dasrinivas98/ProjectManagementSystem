@@ -21,6 +21,7 @@
   <!-- inject:css -->
   <link rel="stylesheet" href="../css/style.css">
   <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <!-- endinject -->  
 </head>
 <body>
@@ -101,7 +102,7 @@
            </div>
            <?php    
                 $gid = $_SESSION['g_id'];
-                $sql = "SELECT COUNT(status) FROM projects WHERE g_id=$gid AND status=1";
+                $sql = "SELECT COUNT(status) FROM projects WHERE g_id=$gid AND finalStatus=1";
                 if (!($result = mysqli_query($link, $sql))) { 
                   printf("Errormessage: %s\n", mysqli_error($link));
                 }
@@ -109,7 +110,7 @@
                     $completedP = mysqli_fetch_array($result);
 
                 }
-                $sql = "SELECT COUNT(status) FROM projects WHERE g_id=$gid AND status=0";
+                $sql = "SELECT COUNT(status) FROM projects WHERE g_id=$gid AND finalStatus=0";
                 if (!($result = mysqli_query($link, $sql))) { 
                   printf("Errormessage: %s\n", mysqli_error($link));
                 }
@@ -319,7 +320,41 @@
                                               echo "<div class='text-danger'>No Document</div>";?>
                                             </div>
                                           </div>
-                                          <div class="form-group" id="txtEditor">
+                                          <?php
+                                                  if($row['finalStatus'] == 1){
+                                                    echo '<button type="button" class="btn btn-primary btn-lg btn-block btn-icon-text" disabled>
+                                                    <i class="mdi mdi-check btn-icon-prepend"></i>Project Submitted</button>
+                                                          <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                          </div>';
+                                                  }
+                                                  else{
+                                                    echo '<div class="form-group" id="txtEditor">
+                                                    <label for="exampleTextarea1">Remarks</label>
+                                                    <textarea id="editor'.$row["p_id"].'" class="form-control" name="remarks" placeholder="Add remarks if any"></textarea>
+                                                  </div>
+                                                  <script>
+                                                    tinymce.init({
+                                                      selector: "textarea#editor'.$row["p_id"].'",
+                                                      menubar: false,
+                                                      toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist",
+                                                    });
+                                                  </script>
+                                                  <input type="hidden" name="pid" value="'.$row["p_id"].'">
+                                                  <div class="form-check form-check-primary">
+                                                    <label class="form-check-label">
+                                                      <input type="checkbox" class="form-check-input" name="final" value=1>
+                                                      I acknowledge that i have gone through the "'.$row["p_title"].'" a project by '.$row["s_name"].' and accept the final submission of the same.
+                                                    </label>
+                                                  </div>
+                                                  <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <input type="submit" class="btn btn-primary" name="saveR">
+                                                  </div>';
+                                                  }
+                                          
+                                          ?>
+                                          <!-- <div class="form-group" id="txtEditor">
                                             <label for="exampleTextarea1">Remarks</label>
                                             <textarea id="editor<?php echo $row['p_id'];?>" class="form-control" name="remarks" placeholder="Add remarks if any"></textarea>
                                           </div>
@@ -340,7 +375,7 @@
                                           <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                             <input type="submit" class="btn btn-primary" name="saveR">
-                                          </div>
+                                          </div> -->
                                        </form>   
                                       </div>
                                         
@@ -360,6 +395,123 @@
             </div>
           </div>     
         </div>
+        <div class="row">
+            <div class="col-lg-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <canvas id="doughnutChart"></canvas>
+                </div>
+              </div>
+            </div>
+           </div>
+           <script>
+        $(document).ready(function () {
+            showGraph();
+        });
+
+
+        function showGraph()
+        {
+            {
+                $.post("data.php",
+                function (data)
+                {
+                    console.log(data);
+                     var Active = [];
+                    var Completed = [];
+
+                    for (var i in data) {
+                        Active.push(data[i].Active);
+                        Completed.push(data[i].Completed);
+                    }
+                    var doughnutPieData = {
+                                datasets: [{
+                                  data: [Active,Completed],
+                                  backgroundColor: [
+                                    'rgba(2, 117, 216)',
+                                   
+                                    'rgb(255, 111, 97)'
+                                  ],
+                                  borderColor: [
+                                    'rgba(2, 117, 216)',
+                                   'rgb(255, 111, 97)'
+                                  ],
+                                }],
+                                labels: [
+                                  'Active',
+                                  'Completed',
+                                  
+                                ]
+                              };
+                              var doughnutPieOptions = {
+                                  responsive: true,
+                                  animation: {
+                                    animateScale: true,
+                                    animateRotate: true
+                                  }
+                                };
+                                
+                                // Get context with jQuery - using jQuery's .get() method.
+                                
+                              
+                                if ($("#doughnutChart").length) {
+                                  var doughnutChartCanvas = $("#doughnutChart").get(0).getContext("2d");
+                                  var doughnutChart = new Chart(doughnutChartCanvas, {
+                                    type: 'doughnut',
+                                    data: doughnutPieData,
+                                    options: doughnutPieOptions
+                                  });
+                                }
+                    
+
+                    // var chartdata = {
+                    //     labels: name,
+                    //     datasets: [
+                    //         {
+                    //             label: 'Student Marks',
+                    //             backgroundColor: '#49e2ff',
+                    //             borderColor: '#46d5f1',
+                    //             hoverBackgroundColor: '#CCCCCC',
+                    //             hoverBorderColor: '#666666',
+                    //             data: marks
+                    //         }
+                    //     ]
+                    // };
+
+                    // var graphTarget = $("#doughnutChart");
+
+                    // var doughnutGraph = new Chart(graphTarget, {
+                    //     type: 'doughnut',
+                    //     data: chartdata
+                    // });
+                });
+            }
+        }
+        </script>
+        <div class="row">
+            <div class="col-lg-6 grid-margin stretch-card">
+              <div class="card col-lg-6">
+                <div class="card-body">
+                  <?php
+                    $gid = $_SESSION['g_id'];
+                    echo '<a href="../assests/toCsv.php?gid='.$gid.'&finalStatus=1"><button type="button" class="btn btn-primary btn-lg btn-block btn-icon-text">
+                    <i class="mdi mdi-download btn-icon-prepend"></i>Completed Projects </button></a>';
+                  ?>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 grid-margin stretch-card">
+              <div class="card col-lg-6">
+                <div class="card-body">
+                  <?php
+                    $gid = $_SESSION['g_id'];
+                    echo '<a href="../assests/toCsv.php?gid='.$gid.'&finalStatus=0"><button type="button" class="btn btn-primary btn-lg btn-block btn-icon-text">
+                    <i class="mdi mdi-download btn-icon-prepend"></i>Pending Projects </button></a>';
+                  ?>
+                </div>
+              </div>
+            </div>
+           </div>
      </div> 
      <?php  if(isset($_POST['saveR']))
               {
@@ -423,7 +575,7 @@
   <script src="../js/dataTables.bootstrap4.js"></script>
   <!-- End custom js for this page-->
   <script src="../js/jquery.cookie.js" type="text/javascript"></script>
-  <script src="../chart.js"></script>
+  <!-- <script src="../chart.js"></script> -->
 </body>
 
 </html>

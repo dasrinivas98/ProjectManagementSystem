@@ -1,5 +1,4 @@
 <?php
- include('../assests/dbconnect.php');
  include('dbconnect.php');
 
 if (isset($_GET['pid'])) {
