@@ -235,7 +235,7 @@
                                             <div><?php echo $row['p_abs'];?></div>
                                           </div>
                                           <div class="form-group">
-                                            <label class="font-weight-bold">Abstract</label>
+                                            <label class="font-weight-bold">Objective</label>
                                             <div><?php echo $row['p_obj'];?></div>
                                           </div>
                                           <div class="form-group">
@@ -283,7 +283,7 @@
                                                $pid = $row["p_id"];
                                                $report = 'd_report';
                                               echo '<div class="text-success"><a href="../assests/fileslogic.php?pid='.$pid.'&file='.$report.'">Download Report</a></div>';}else 
-                                              echo "<div class='text-danger'>No file</div>";?>
+                                              echo "<div class='text-danger'>No Document</div>";?>
                                             </div>
                                           </div>
                                           <div class="form-group row">

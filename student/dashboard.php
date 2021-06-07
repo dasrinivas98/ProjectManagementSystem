@@ -272,7 +272,8 @@
                                           //   <input  type="submit" name="download" value="Download Report" class="btn btn-primary">
 
                                           //   </form>';
-                                          echo '<div class="form-group"><a href="../assests/fileslogic.php?pid='.$pid.'">Download Report</a></div>';
+                                          $report = 'd_report';
+                                          echo '<div class="form-group"><a href="../assests/fileslogic.php?pid='.$pid.'&file='.$report.'">Download Report</a></div>';
                                             // <a href="dashboard.php?file_id='.$pid.'">Download</a>';
 
                                           }
@@ -322,7 +323,8 @@
                                           //   <input  type="submit" name="download" value="Download Report" class="btn btn-primary">
 
                                           //   </form>';
-                                          echo '<div class="form-group"><a href="../assests/fileslogic.php?pid='.$pid.'">Download Report</a></div>';
+                                          $report = 't_report';
+                                          echo '<div class="form-group"><a href="../assests/fileslogic.php?pid='.$pid.'&file='.$report.'">Download Report</a></div>';
                                             // <a href="dashboard.php?file_id='.$pid.'">Download</a>';
 
                                           }
@@ -371,7 +373,8 @@
                                           //   <input  type="submit" name="download" value="Download Report" class="btn btn-primary">
 
                                           //   </form>';
-                                          echo '<div class="form-group"><a href="../assests/fileslogic.php?pid='.$pid.'">Download Report</a></div>';
+                                          $report = 'report'
+                                          echo '<div class="form-group"><a href="../assests/fileslogic.php?pid='.$pid.'&file='.$report.'">Download Report</a></div>';
                                             // <a href="dashboard.php?file_id='.$pid.'">Download</a>';
 
                                           }
