@@ -94,7 +94,7 @@ if (mysqli_num_rows($result) > 0) {
         $users[] = $row;
     }
 }
-
+ob_end_clean();
 header('Content-Type: text/csv; charset=utf-8');
 header("Content-Disposition: attachment; filename=\"$fileName\"");
 $output = fopen('php://output', 'w');

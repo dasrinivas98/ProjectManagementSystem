@@ -1,0 +1,8 @@
+<br />
+<b>Warning</b>:  Undefined array key "name" in <b>C:\xampp\htdocs\pms10\assests\fileslogic.php</b> on line <b>23</b><br />
+<br />
+<b>Warning</b>:  Cannot modify header information - headers already sent by (output started at C:\xampp\htdocs\pms10\assests\fileslogic.php:23) in <b>C:\xampp\htdocs\pms10\assests\fileslogic.php</b> on line <b>23</b><br />
+<br />
+<b>Warning</b>:  Undefined array key "name" in <b>C:\xampp\htdocs\pms10\assests\fileslogic.php</b> on line <b>24</b><br />
+<br />
+<b>Warning</b>:  readfile(uploads/): Failed to open stream: No such file or directory in <b>C:\xampp\htdocs\pms10\assests\fileslogic.php</b> on line <b>24</b><br />

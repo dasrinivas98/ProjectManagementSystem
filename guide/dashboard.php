@@ -30,8 +30,8 @@
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="navbar-brand-wrapper d-flex justify-content-center">
         <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">  
-          <a class="navbar-brand brand-logo" href="../index.html"><img src="../images/logo.jpg"style="width: 100%;" alt="logo"></a>
-          <a class="navbar-brand brand-logo-mini" href="../index.html"><img src="../images/logomini.jpg" alt="logo"></a>
+          <a class="navbar-brand brand-logo" href="dashboard.php"><img src="../images/logo.jpg"style="width: 100%;" alt="logo"></a>
+          <a class="navbar-brand brand-logo-mini" href="dashboard.php"><img src="../images/logomini.jpg" alt="logo"></a>
           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
             <span class="mdi mdi-sort-variant"></span>
           </button>
@@ -82,6 +82,12 @@
             <a class="nav-link" href="dashboard.php">
               <i class="mdi mdi-home menu-icon"></i>
               <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="account.php">
+              <i class="mdi mdi-account menu-icon"></i>
+              <span class="menu-title">Account</span>
             </a>
           </li>
         </ul>

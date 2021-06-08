@@ -29,8 +29,8 @@
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="navbar-brand-wrapper d-flex justify-content-center">
         <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">  
-          <a class="navbar-brand brand-logo" href="../index.html"style="width: 100%;"><img src="../images/logo.jpg" alt="logo" style="width: 100%;"></a>
-          <a class="navbar-brand brand-logo-mini" href="../index.html"><img src="../images/logomini.jpg" alt="logo"></a>
+          <a class="navbar-brand brand-logo" href="dashboard.php"style="width: 100%;"><img src="../images/logo.jpg" alt="logo" style="width: 100%;"></a>
+          <a class="navbar-brand brand-logo-mini" href="dashboard.php"><img src="../images/logomini.jpg" alt="logo"></a>
           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
             <span class="mdi mdi-sort-variant"></span>
           </button>
@@ -87,6 +87,12 @@
             <a class="nav-link" href="addProject/addProject.php">
               <i class="mdi mdi-plus-box menu-icon"></i>
               <span class="menu-title">Add Project</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="account.php">
+              <i class="mdi mdi-account menu-icon"></i>
+              <span class="menu-title">Account</span>
             </a>
           </li>
         </ul>
@@ -241,7 +247,7 @@
                                               <input type="radio" class="form-check-input" name="status" id="optionsRadios1" value="0" <?php echo($row['d_status']==0 ? 'checked' : '');?>>
                                               In progress
                                               </label>
-                                           </div>
+                                            </div>
                                            <div class="form-check">
                                             <label class="form-check-label">
                                             <input type="radio" class="form-check-input" name="status" id="optionsRadios2" value="1" <?php echo($row['d_status']==1 ? 'checked' : '');?>>
@@ -272,8 +278,8 @@
                                           //   <input  type="submit" name="download" value="Download Report" class="btn btn-primary">
 
                                           //   </form>';
-                                          $report = 'd_report';
-                                          echo '<div class="form-group"><a href="../assests/fileslogic.php?pid='.$pid.'&file='.$report.'">Download Report</a></div>';
+                                          $report1 = 'd_report';
+                                          echo '<div class="form-group"><a href="../assests/fileslogic.php?pid='.$pid.'&file='.$report1.'">Download Report</a></div>';
                                             // <a href="dashboard.php?file_id='.$pid.'">Download</a>';
 
                                           }
@@ -323,10 +329,9 @@
                                           //   <input  type="submit" name="download" value="Download Report" class="btn btn-primary">
 
                                           //   </form>';
-                                          $report = 't_report';
-                                          echo '<div class="form-group"><a href="../assests/fileslogic.php?pid='.$pid.'&file='.$report.'">Download Report</a></div>';
+                                          $report1 = 't_report';
+                                          echo '<div class="form-group"><a href="../assests/fileslogic.php?pid='.$pid.'&file='.$report1.'">Download Report</a></div>';
                                             // <a href="dashboard.php?file_id='.$pid.'">Download</a>';
-
                                           }
                                           ?>
                                           <div>
@@ -373,8 +378,8 @@
                                           //   <input  type="submit" name="download" value="Download Report" class="btn btn-primary">
 
                                           //   </form>';
-                                          $report = 'report'
-                                          echo '<div class="form-group"><a href="../assests/fileslogic.php?pid='.$pid.'&file='.$report.'">Download Report</a></div>';
+                                          $report1 = 'report';
+                                          echo '<div class="form-group"><a href="../assests/fileslogic.php?pid='.$pid.'&file='.$report1.'">Download Report</a></div>';
                                             // <a href="dashboard.php?file_id='.$pid.'">Download</a>';
 
                                           }
@@ -386,7 +391,23 @@
                                       </div>
                                         </div>
                                       </div>
-                                    </div>  
+                                    </div>
+                                    <div class="col-lg-12 grid-margin stretch-card">
+                                      <div class="card">
+                                        <div class="card-body">
+                                        <h4 class="card-title">Remarks</h4>
+                                          <?php
+                                              if($row['remarks'] == NULL ||$row['remarks'] == 'NULL'||$row['remarks'] =='')
+                                              {
+                                                echo "<i>No Remarks</i>";
+                                              }else{
+                                            echo $row['remarks'];
+                                              }
+                                          ?>
+                                        </div>
+                                      </div>
+                                    </div>
+
                                   </div>
                                     </div>
                                     <div class="modal-footer">
@@ -452,7 +473,6 @@
                         </div>
                       </div>
                     </div>
-                    
                   </div>
               </div>
             </div>
@@ -515,20 +535,12 @@
                 $file = $_FILES['pFiles']['tmp_name'];
                 $size = $_FILES['pFiles']['size'];
                 if (move_uploaded_file($file, $destination)) {
-              //   $sql = "INSERT INTO reports(r_id,r_remarks,p_id) VALUES ('','$addinfo','$p_id')";
-              //   if (!mysqli_query($link, $sql)) {
-              //   // echo "File uploaded successfully";
-              //   printf("Errormessage: %s\n", mysqli_error($link));
-              //   }
-              // else {
-                echo "<script>window.alert('Project Updated Successfully');window.location = 'dashboard.php'</script>";
-                // header('Location: dashboard.html');
-              //     }
+                    echo "<script>window.alert('Project Updated Successfully');window.location = 'dashboard.php'</script>";
                 }
                 else{
                    echo "<script>window.alert('Please select a file');</script>" ;    
                 }
-              }// echo "<script>window.alert('".$_POST['p_id']."')</script>";
+              }
               }
             }
               if(isset($_POST['Tsave']))
