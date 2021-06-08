@@ -104,7 +104,7 @@
                   <form class="forms-sample" action="addProject.php" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                       <label for="exampleInputName1">Project title</label>
-                      <input type="text" class="form-control" name="pTitle" id="exampleInputName1" placeholder="Project title">
+                      <input type="text" class="form-control" name="pTitle" required id="exampleInputName1" placeholder="Project title">
                     </div>
                     <!-- <div class="form-group">
                         <label class="form-label">Project duration</label>
@@ -119,7 +119,7 @@
                     </div> -->
                     <div class="form-group" id="txtEditor">
                       <label for="exampleTextarea1">Abstract</label>
-                      <textarea id="editor" class="form-control" name="pAbs" placeholder="Abstract"></textarea>
+                      <textarea id="editor" class="form-control" name="pAbs" required placeholder="Abstract"></textarea>
                     </div>
                     <script>
                       tinymce.init({
@@ -130,7 +130,7 @@
                     </script>
                     <div class="form-group" id="txtEditor">
                       <label for="exampleTextarea1">Objective od the Project</label>
-                      <textarea id="editor1" class="form-control" name="pObj" placeholder="Objective od the Project"></textarea>
+                      <textarea id="editor1" class="form-control" name="pObj" required placeholder="Objective od the Project"></textarea>
                     </div>
                     <script>
                       tinymce.init({
@@ -141,7 +141,7 @@
                     </script>
                     <div class="form-group" id="txtEditor">
                       <label for="exampleTextarea1">Software and hardware requirements</label>
-                      <textarea id="editor2" class="form-control" name="pSHR" placeholder="Software and hardware requirements"></textarea>
+                      <textarea id="editor2" class="form-control" name="pSHR" required placeholder="Software and hardware requirements"></textarea>
                     </div>
                     <script>
                       tinymce.init({
@@ -152,7 +152,7 @@
                     </script>
                     <div class="form-group" id="txtEditor">
                       <label for="exampleTextarea1">Introduction</label>
-                      <textarea id="editor3" class="form-control" name="pIntro" placeholder="Introduction"></textarea>
+                      <textarea id="editor3" class="form-control" name="pIntro" required placeholder="Introduction"></textarea>
                     </div>
                     <script>
                       tinymce.init({
@@ -163,7 +163,7 @@
                     </script>
                     <div class="form-group" id="txtEditor">
                       <label for="exampleTextarea1">Functonal requirements</label>
-                      <textarea id="editor4" class="form-control" name="pFReq" placeholder="Functonal requirements"></textarea>
+                      <textarea id="editor4" class="form-control" name="pFReq" required placeholder="Functonal requirements"></textarea>
                     </div>
                     <script>
                       tinymce.init({
@@ -174,7 +174,7 @@
                     </script>
                     <div class="form-group" id="txtEditor">
                       <label for="exampleTextarea1">Modules of the project</label>
-                      <textarea id="editor5" class="form-control" name="pMod" placeholder="Modules of the project"></textarea>
+                      <textarea id="editor5" class="form-control" name="pMod" required placeholder="Modules of the project"></textarea>
                     </div>
                     <script>
                       tinymce.init({
@@ -185,7 +185,7 @@
                     </script>
                     <div class="form-group" id="txtEditor">
                       <label for="exampleTextarea1">Outcome of the project</label>
-                      <textarea id="editor6" class="form-control" name="pOut" placeholder="Outcome of the project"></textarea>
+                      <textarea id="editor6" class="form-control" name="pOut" required placeholder="Outcome of the project"></textarea>
                     </div>
                     <script>
                       tinymce.init({
