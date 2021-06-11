@@ -163,19 +163,23 @@
           <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
               <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table" style="text-align: center;">
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>Project Title</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                    <?php 
-                                  $gid = $_SESSION["g_id"];
+                <div class="container">
+                  <div class="row header" style="text-align:center;color:green">
+                  <h4 class="card-title" style="text-transform:unset;">Projects</h3>
+                  </div>
+                  <table id="myTable" class="table table-striped" >  
+                          <thead>  
+                            <tr>  
+                              <th>#</th> 
+                              <th>USN</th> 
+                              <th>Project Title</th>  
+                              <th>Status</th>  
+                              <th>Action</th>  
+                            </tr>  
+                          </thead>  
+                          <tbody>  
+                          <?php 
+                      $gid = $_SESSION["g_id"];
                                   $sql = "select * from projects INNER JOIN students on projects.s_id = students.s_id where g_id = $gid";
                                   if (!($result = mysqli_query($link, $sql))) { 
                                     printf("Errormessage: %s\n", mysqli_error($link));
@@ -185,20 +189,21 @@
                                       $i = 1;
                                       while($row = mysqli_fetch_array($result)) {
                                 ?>
-                        <tr>
-                          <td><?php echo $i?></td>
-                          <td><?php echo $row['p_title'];?></td>
-                          <?php 
+                            <tr>  
+                              <td><?php echo $i;?></td>  
+                              <td><?php echo $row['s_usn'];?></td>
+                              <td><?php echo $row['p_title'];?></td>  
+                              <?php 
                                       if($row['finalStatus'] == 0){
                                         echo "<td><label class='text-danger'>In progress</label></td>";
                                       }
                                       else{
                                         echo "<td><label class='text-success'>Completed</label></td>";
                                       }
-                                  ?>
-                          <td><button type="button" class="btn btn-inverse-primary btn-fw" data-toggle="modal" data-target="#exampleModalCenter<?php echo $row['p_id'];?>">View</button></td>
-                        </tr>
-                        <div class="modal fade" data-backdrop="static" data-keyboard="false" id="exampleModalCenter<?php echo $row['p_id'];?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                  ?>  
+                              <td><button type="button" class="btn btn-inverse-primary btn-fw" data-toggle="modal" data-target="#exampleModalCenter<?php echo $row['p_id'];?>">View</button></td> 
+                            </tr>  
+                            <div class="modal fade " data-backdrop="static" data-keyboard="false" id="exampleModalCenter<?php echo $row['p_id'];?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                           <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                               <div class="modal-header">
@@ -393,14 +398,24 @@
                             </div>
                           </div>
                         </div>
-                        <?php $i++;}}}?>
-                    </tbody>
-                  </table> 
+                       
+                            <?php $i++;}}}?>  
+                          </tbody>  
+                        </table>  
+                      </div>
+                  </div>
                 </div>
-              </div>
+              </div> 
             </div>
-          </div>     
-        </div>
+                       
+          
+  
+<script>
+$(document).ready(function(){
+    $('#myTable').dataTable();
+});
+</script>
+        
         <div class="row">
             <div class="col-lg-12 grid-margin stretch-card">
               <div class="card">

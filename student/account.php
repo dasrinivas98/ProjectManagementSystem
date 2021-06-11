@@ -159,11 +159,13 @@
                                   printf("Errormessage: %s\n", mysqli_error($link));
                                 }
                               else {  
+                                  
                                   echo "<script>window.alert('User details sucessfully updated');window.location.href = 'account.php';</script>";
                               }
                             }
                         ?>
                     </div>
+                    
                 </div>
               </div>
             </div>

@@ -130,7 +130,7 @@
                       <div class="card">
                         <div class="card-body">
                           <div class="table-responsive">
-                            <table class="table" style="text-align: center;">
+                            <table id="myTable" class="table table-striped" style="text-align: center;">
                               <thead>
                                 <tr>
                                   <th>#</th>
@@ -468,7 +468,11 @@
                           <?php $i++;}}}?>
                               </tbody>
                             </table>
-                           
+                            <script>
+$(document).ready(function(){
+    $('#myTable').dataTable();
+});
+</script>
                           </div>
                         </div>
                       </div>
